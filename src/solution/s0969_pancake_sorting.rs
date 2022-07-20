@@ -108,7 +108,7 @@ mod tests {
     fn test_1009() {
         for _i in 0..20 {
             let mut rng = rand::thread_rng();
-            let size = rng.gen_range(0, 1000);
+            let size = rng.gen_range(0..1000);
             let sorted_vector = make_sorted_vector(size);
             let mut shuffled_vector = make_shuffled_vector(&sorted_vector);
             let res = Solution::pancake_sort(shuffled_vector.clone());
