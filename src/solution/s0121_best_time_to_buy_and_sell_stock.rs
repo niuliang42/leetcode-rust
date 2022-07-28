@@ -1,3 +1,5 @@
+use super::s0238_product_of_array_except_self;
+
 /**
  * [121] Best Time to Buy and Sell Stock
  *
@@ -34,17 +36,14 @@ pub struct Solution {}
 
 impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
-        let mut max = 0;
-        let mut curr = 0;
-        for i in 1..prices.len() {
-            curr = curr + prices[i] - prices[i - 1];
-            if curr <= 0 {
-                curr = 0;
-            } else {
-                max = i32::max(max, curr);
-            }
+        let mut buy = prices[0];
+        let mut pro = 0;
+
+        for &price in &prices[1..] {
+            pro = pro.max(price - buy);
+            buy = buy.min(price);
         }
-        max
+        pro
     }
 }
 

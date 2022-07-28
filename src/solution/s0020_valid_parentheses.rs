@@ -1,3 +1,5 @@
+use std::{collections::HashMap, ops::Deref};
+
 /**
  * [20] Valid Parentheses
  *
@@ -57,20 +59,27 @@ pub struct Solution {}
 
 impl Solution {
     pub fn is_valid(s: String) -> bool {
-        let mut stack: Vec<char> = Vec::new();
-        for ch in s.chars().into_iter() {
-            match stack.last() {
-                None => {}
-                Some(&last) => {
-                    if Solution::pair(last, ch) {
-                        stack.pop();
-                        continue;
+        let m = std::collections::HashMap::from([('(', ')'), ('[', ']'), ('{', '}')]);
+        let mut stack: Vec<char> = vec![];
+        for c in s.chars().into_iter() {
+            if c == '(' || c == '[' || c == '{' {
+                stack.push(c);
+            } else {
+                match stack.pop() {
+                    None => {
+                        return false;
+                    },
+                    Some(p) => {
+                        if c == *(m.get(&p).unwrap()) {
+                            continue;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
-            stack.push(ch);
         }
-        stack.is_empty()
+        stack.len() == 0
     }
 
     #[inline(always)]

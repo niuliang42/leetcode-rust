@@ -1,3 +1,5 @@
+use std::usize;
+
 /**
  * [125] Valid Palindrome
  *
@@ -29,28 +31,37 @@ pub struct Solution {}
 
 impl Solution {
     pub fn is_palindrome(s: String) -> bool {
-        if s.is_empty() {
+        if s.len() <= 1 {
             return true;
         }
-        let seq = s.chars().collect::<Vec<_>>();
-        let (mut i, mut j) = (0_usize, seq.len() - 1);
+        let s: Vec<char> = s.to_lowercase().chars().collect();
+        let (mut i, mut j) = (0_usize, s.len() - 1);
         while i < j {
-            while i < seq.len() && !seq[i].is_ascii_alphanumeric() {
+            while  i < j && !s[i].is_alphanumeric() {
                 i += 1;
             }
-            while j > 0 && !seq[j].is_ascii_alphanumeric() {
+            while i < j && !s[j].is_alphanumeric() {
                 j -= 1;
             }
-            if i >= j {
-                break;
-            }
-            if seq[i].to_ascii_lowercase() != seq[j].to_ascii_lowercase() {
+            // println!("{} {} {} {}",i,j,s[i],s[j]);
+            if s[i] != s[j]{
                 return false;
             }
-            i += 1;
-            j -= 1;
+            if i >= s.len() || j == 0 {
+                break
+            } else {
+                i += 1;
+                j -= 1;
+            }
         }
         true
+        // let mut trimmed = String::with_capacity(s.len());
+        // for c in s.to_lowercase().chars().into_iter() {
+        //     if c.is_alphanumeric() {
+        //         trimmed.push(c);
+        //     }
+        // }
+        // trimmed == trimmed.chars().rev().collect::<String>()
     }
 }
 
@@ -68,5 +79,8 @@ mod tests {
         );
         assert_eq!(Solution::is_palindrome("race a car".to_owned()), false);
         assert_eq!(Solution::is_palindrome("0P".to_owned()), false);
+        assert_eq!(Solution::is_palindrome(".,".to_owned()), true);
+        assert_eq!(Solution::is_palindrome("a,".to_owned()), true);
+        assert_eq!(Solution::is_palindrome("a a".to_owned()), true);
     }
 }
