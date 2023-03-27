@@ -22,7 +22,8 @@ use futures::task::SpawnExt;
 use std::sync::{Arc, Mutex};
 
 /// main() helps to generate the submission template .rs
-fn main() {
+#[tokio::main]
+async fn main() {
     println!("Welcome to leetcode-rust system.\n");
     let mut initialized_ids = get_initialized_ids();
     loop {
@@ -125,7 +126,7 @@ fn main() {
             }
         }
 
-        let problem = block_on(fetcher::get_problem(id)).unwrap_or_else(|| {
+        let problem = fetcher::get_problem(id).await.unwrap_or_else(|| {
             panic!(
                 "Error: failed to get problem #{} \
                  (The problem may be paid-only or may not be exist).",
